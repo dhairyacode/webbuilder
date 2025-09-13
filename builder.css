@@ -1,0 +1,93 @@
+body { font-family: Arial,sans-serif; margin:0; padding:0; transition: 0.3s; }
+.header { position: fixed; top:20px; left:20px; font-weight:bold; font-size:20px; }
+.toggle-container { position: fixed; top:20px; right:20px; display:flex; align-items:center; gap:10px; }
+.toggle-switch { position: relative; display:inline-block; width:60px; height:34px; }
+.toggle-switch input { opacity:0; width:0; height:0; }
+.slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; border-radius:34px; transition:0.4s; }
+.slider::before { position:absolute; content:""; height:26px; width:26px; left:4px; bottom:4px; background:white; border-radius:50%; transition:0.4s; }
+input:checked + .slider { background-color:#4CAF50; }
+input:checked + .slider::before { transform:translateX(26px); }
+.toggle-label { font-size:16px; color:#333; transition:0.3s; }
+.divider { position:fixed; top:70px; left:0; width:100%; height:2px; background-color:#000; }
+.nav-box { position:fixed; top:100px; right:20px; display:flex; background:#f8f8f8; border-radius:8px; overflow:hidden; transition:0.3s; align-items:center; gap:8px; }
+.nav-tab { padding:12px 24px; cursor:pointer; font-weight:500; color:#555; transition:0.3s; }
+.nav-tab.active { background:#007BFF; color:#fff; }
+#resetBuilder {
+    padding: 8px 16px; /* slightly bigger for a modern feel */
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    background-color: #ff4d4d;
+    color: #fff;
+    border-radius: 6px; /* rounded corners */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+#resetBuilder:hover {
+    background-color: #d9363e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+.left-directory { position: fixed; top:150px; left:0; width:250px; height:calc(100% - 150px); background:#f0f0f0; padding:10px; overflow-y:auto; transition:0.3s; }
+.directory-item { padding:6px 8px; border-radius:4px; background:#fff; margin-bottom:3px; cursor:pointer; transition:0.3s; }
+.editor-container { position:absolute; top:150px; left:270px; right:20px; bottom:20px; background:#eaeaea; display:flex; flex-direction:column; transition:0.3s; }
+.editor-header { display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:#d6d6d6; transition:0.3s; }
+.mac-buttons span { width:12px; height:12px; border-radius:50%; display:inline-block; margin-right:4px; }
+.red { background:#ff605c; } .yellow { background:#ffbd44; } .green { background:#00ca4e; }
+.file-name-display { font-weight:bold; font-size:14px; }
+.preview-container { position:absolute; top:150px; left:0; right:0; bottom:0; display:flex; flex-direction:column; visibility:hidden; }
+.browser-bar { height:40px; background:#e0e0e0; display:flex; align-items:center; padding:0 12px; font-family:monospace; font-weight:bold; }
+iframe { width:100%; height:calc(100% - 40px); border:none; background:#fff; }
+
+/* DARK MODE */
+body.dark-mode { background:#1e1e1e; color:#fff; }
+body.dark-mode .header, body.dark-mode .toggle-label, body.dark-mode .nav-tab { color:#fff; }
+body.dark-mode .nav-box { background:#2a2a2a; }
+body.dark-mode .nav-tab.active { background:#007BFF; color:#fff; }
+body.dark-mode .left-directory { background:#2a2a2a; }
+body.dark-mode .directory-item { background:#3a3a3a; color:#fff; }
+body.dark-mode .editor-container { background:#1e1e1e; color:#fff; }
+body.dark-mode .editor-header { background:#2a2a2a; color:#fff; }
+body.dark-mode .preview-container { background:#1e1e1e; }
+body.dark-mode .browser-bar { background:#2a2a2a; color:#fff; }
+
+body.dark-mode #resetBuilder {
+    background-color: #ff7875;
+    color: #1e1e1e;
+}
+
+body.dark-mode #resetBuilder:hover {
+    background-color: #ff4d4d;
+}
+
+#exportButton {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    background-color: #4CAF50;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    margin-left: 10px;
+}
+
+#exportButton:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+/* Dark mode support */
+body.dark-mode #exportButton {
+    background-color: #6cc070;
+    color: #1e1e1e;
+}
+
+body.dark-mode #exportButton:hover {
+    background-color: #57b25a;
+}

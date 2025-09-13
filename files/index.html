@@ -1,0 +1,132 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('modeToggle');
+    const codeTab = document.getElementById('codeTab');
+    const previewTab = document.getElementById('previewTab');
+    const leftDirectory = document.getElementById('leftDirectory');
+    const editorContainer = document.getElementById('editorContainer');
+    const previewContainer = document.getElementById('previewContainer');
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    const previewFrame = document.getElementById('previewFrame');
+
+    const defaultFiles = {
+        'index.html': `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Example Site</title>
+<link rel="stylesheet" href="files/style.css">
+</head>
+<body>
+<header class="hero-section">
+<div class="hero-content">
+<h1>EXAMPLE SITE HEADER</h1>
+<p class="slogan">Slogan Here...</p>
+<button id="explore-btn">EXPLORE MORE</button>
+</div>
+</header>
+<script src="files/script.js"></script>
+</body>
+</html>`,
+
+        'files/style.css': `*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(135deg,#f5f7fa,#c3cfe2);color:#333;}
+.hero-section{display:flex;justify-content:center;align-items:center;text-align:center;padding:2rem;}
+.hero-content h1{font-size:3rem;font-weight:700;margin-bottom:1rem;color:#1e1e2f;}
+.hero-content .slogan{font-size:1.5rem;margin-bottom:2rem;color:#555;}
+#explore-btn{padding:1rem 2rem;font-size:1rem;font-weight:600;background:#6c63ff;color:#fff;border:none;border-radius:50px;cursor:pointer;transition:all 0.3s ease;}
+#explore-btn:hover{background:#5750d9;transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,0.2);}`,
+
+        'files/script.js': `document.getElementById('explore-btn').addEventListener('click',()=>{alert("You clicked Explore More!");});`
+    };
+
+    const storedFiles = JSON.parse(localStorage.getItem('webbuilderFiles') || '{}');
+    const files = {...defaultFiles, ...storedFiles};
+
+    let currentFile = null; // No file selected initially
+
+    const editor = CodeMirror.fromTextArea(document.getElementById('codeEditor'), {
+        value: '',
+        lineNumbers: true,
+        mode: 'htmlmixed',
+        theme: 'material',
+        lineWrapping: true
+    });
+
+    fileNameDisplay.textContent = 'No File Selected';
+
+    // Dark mode toggle
+    toggle.addEventListener('change', () => {
+        const dark = toggle.checked;
+        document.body.classList.toggle('dark-mode', dark);
+        editor.setOption('theme', dark ? 'material' : 'default');
+    });
+
+    // File selection from directory
+    const fileItems = document.querySelectorAll('.directory-item.file');
+    fileItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // Save previous file
+            if(currentFile) {
+                files[currentFile] = editor.getValue();
+                saveFiles();
+            }
+
+            currentFile = item.dataset.filename;
+            fileNameDisplay.textContent = currentFile;
+
+            let mode = 'htmlmixed';
+            if(currentFile.endsWith('.css')) mode = 'css';
+            else if(currentFile.endsWith('.js')) mode = 'javascript';
+            editor.setOption('mode', mode);
+            editor.setValue(files[currentFile] || '');
+
+            // Update preview immediately if preview tab is active
+            if(previewTab.classList.contains('active')) updatePreview();
+        });
+    });
+
+    // Tabs
+    codeTab.addEventListener('click', () => {
+        codeTab.classList.add('active');
+        previewTab.classList.remove('active');
+        leftDirectory.style.visibility = 'visible';
+        editorContainer.style.visibility = 'visible';
+        previewContainer.style.visibility = 'hidden';
+    });
+
+    previewTab.addEventListener('click', () => {
+        previewTab.classList.add('active');
+        codeTab.classList.remove('active');
+        leftDirectory.style.visibility = 'hidden';
+        editorContainer.style.visibility = 'hidden';
+        previewContainer.style.visibility = 'visible';
+
+        // Only update preview if index.html exists
+        if(files['index.html']) updatePreview();
+        else previewFrame.srcdoc = '';
+    });
+
+    // Editor change
+    editor.on('change', () => {
+        if(currentFile) {
+            files[currentFile] = editor.getValue();
+            saveFiles();
+            if(previewTab.classList.contains('active')) updatePreview();
+        }
+    });
+
+    function updatePreview() {
+        const html = files['index.html'] || '';
+        const css = files['files/style.css'] ? `<style>${files['files/style.css']}</style>` : '';
+        const js = files['files/script.js'] ? `<script>${files['files/script.js']}</script>` : '';
+        previewFrame.srcdoc = `${html.replace('</head>', css + '</head>').replace('</body>', js + '</body>')}`;
+    }
+
+    function saveFiles() {
+        localStorage.setItem('webbuilderFiles', JSON.stringify(files));
+    }
+
+    // Start with empty editor
+    codeTab.click();
+});

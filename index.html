@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebBuilder - Dhairyacode</title>
+    <link rel="stylesheet" href="builder.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/material.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/css/css.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+</head>
+<body>
+    <div class="header">WEBBUILDER</div>
+    <div class="toggle-container">
+	    <button id="exportButton">Export</button>
+        <label class="toggle-label">Dark Mode</label>
+        <label class="toggle-switch">
+            <input type="checkbox" id="modeToggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+    <div class="divider"></div>
+
+    <div class="nav-box">
+        <div class="nav-tab active" id="codeTab">CODE</div>
+        <div class="nav-tab" id="previewTab">Preview</div>
+        <button id="resetBuilder" title="Reset Builder">Reset</button>
+    </div>
+
+    <div class="left-directory" id="leftDirectory">
+        <div class="directory-item file" data-filename="files/index.html">index.html</div>
+        <div class="directory-item file" data-filename="files/style.css">style.css</div>
+        <div class="directory-item file" data-filename="files/script.js">script.js</div>
+    </div>
+
+    <div class="editor-container" id="editorContainer">
+        <div class="editor-header">
+            <div class="mac-buttons">
+                <span class="red"></span>
+                <span class="yellow"></span>
+                <span class="green"></span>
+            </div>
+            <div class="file-name-display" id="fileNameDisplay">No File Selected</div>
+        </div>
+        <textarea id="codeEditor"></textarea>
+    </div>
+
+    <div class="preview-container" id="previewContainer">
+        <div class="browser-bar">dhairyacode.localhost:80</div>
+        <iframe id="previewFrame"></iframe>
+    </div>
+
+    <script src="builder.js"></script>
+</body>
+</html>
